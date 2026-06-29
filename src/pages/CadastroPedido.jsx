@@ -15,24 +15,10 @@ function CadastroPedido() {
     const [quantidade, setQuantidade] = useState(1);
     const [sacola, setSacola] = useState([]);
 
-    // const mockClientes = [
-    //     { id: 1, nome: 'Bea', email: 'bea@email.com', cpf: '000.888.111-85' },
-    //     { id: 2, nome: 'Luca', email: 'luca@mail.com', cpf: '000.000.111.10' },
-    //     { id: 3, nome: 'Lili', email: 'lili@mail.com', cpf: '111.111.111-00' },
-    //     { id: 4, nome: 'Joana', email: 'joana@mail.com', cpf: '001.100.010-01'}
-    // ];
-    // const mockProdutos = [
-    //     { id: 1, descricao: "Mouse Gamer Sem Fio RGB", valorUnitario: 189.90 },
-    //     { id: 2, descricao: "Teclado Mecânico Switch Blue", valorUnitario: 349.00 },
-    //     { id: 3, descricao: "Monitor Monitor UltraWide 29'", valorUnitario: 1250.00 },
-    //     { id: 4, descricao: "Headset Estéreo com Microfone", valorUnitario: 219.99 },
-    //     { id: 5, descricao: "Webcam Full HD 1080p", valorUnitario: 155.50 }
-    // ];
-
     useEffect(() => {
         const carregarDados = async () => {
             try {
-                const resClientes = await fetch('https://sistema-pedidos-production-47b7.up.railway.app/clientes');
+                const resClientes = await fetch('https://sistema-pedidos-production-47b7.up.railway.app/clientes/todos');
                 const resProdutos = await fetch('https://sistema-pedidos-production-47b7.up.railway.app/produtos');
                 
                 if (resClientes.ok) {
