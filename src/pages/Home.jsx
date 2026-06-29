@@ -12,6 +12,10 @@ function Home() {
     const [paginaAtual, setPaginaAtual] = useState(0);
     const [totalPaginas, setTotalPaginas] = useState(0);
 
+    const [modalAberto, setModalAberto] = useState(false);
+    const [pedidoDetalhe, setPedidoDetalhe] = useState(null);
+    const [carregandoDetalhe, setCarregandoDetalhe] = useState(false);
+
     const handlePesquisar = async (paginaAlvo = 0) => {
         const params = new URLSearchParams();
         if (buscaNome) params.append('nomeCliente', buscaNome);
@@ -36,6 +40,33 @@ function Home() {
         } catch (erro) {
             console.error("Erro ao buscar pedidos: ", erro);
         }
+    };
+
+    const buscarDetalhesPedido = async (id) => {
+        setModalAberto(true);
+        setCarregandoDetalhe(true);
+        
+        try {
+            const resposta = await fetch(`https://sistema-pedidos-production-47b7.up.railway.app/pedidos/${id}`);
+            if (resposta.ok) {
+                const dados = await resposta.json();
+                setPedidoDetalhe(dados);
+            } else {
+                alert("Erro ao buscar detalhes do pedido.");
+                setModalAberto(false);
+            }
+        } catch (erro) {
+            console.error(erro);
+            alert("Erro de conexão.");
+            setModalAberto(false);
+        } finally {
+            setCarregandoDetalhe(false);
+        }
+    };
+
+    const fecharModal = () => {
+        setModalAberto(false);
+        setPedidoDetalhe(null);
     };
 
     const formatarData = (dataString) => {
@@ -97,6 +128,10 @@ function Home() {
                                     <p className="pedido-total">
                                         Total: R$ {pedido.valorTotal.toFixed(2)}
                                     </p>
+
+                                    <button className="btn-detalhes" onClick={() => buscarDetalhesPedido(pedido.id)} >
+                                        Detalhar
+                                    </button>
                                 </div>
                             ))}
                         </div>
@@ -126,6 +161,59 @@ function Home() {
                     )}
                 </div>
             )}
+
+            {/* === ESTRUTURA DO MODAL === */}
+            {modalAberto && (
+                <div className="modal-overlay" onClick={fecharModal}>
+                    {/* O e.stopPropagation() impede que clicar dentro do modal feche ele */}
+                    <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+                        <button className="btn-fechar-modal" onClick={fecharModal}>&times;</button>
+                        
+                        {carregandoDetalhe ? (
+                            <p style={{ textAlign: 'center', margin: '40px 0' }}>Buscando detalhes no servidor...</p>
+                        ) : pedidoDetalhe ? (
+                            <>
+                                <h2 style={{ marginBottom: '5px' }}>Detalhes do Pedido #{pedidoDetalhe.id}</h2>
+                                <p style={{ color: '#666', marginTop: '0' }}>Data: {pedidoDetalhe.dataCriacao}</p>
+                                
+                                <div style={{ backgroundColor: '#f4f4f4', padding: '15px', borderRadius: '4px', margin: '15px 0' }}>
+                                    <p style={{ margin: '5px 0' }}><strong>Cliente:</strong> {pedidoDetalhe.clienteNome}</p>
+                                    <p style={{ margin: '5px 0' }}><strong>Status:</strong> {pedidoDetalhe.status}</p>
+                                </div>
+
+                                <h3>Itens do Pedido:</h3>
+                                <table className="tabela-itens">
+                                    <thead>
+                                        <tr>
+                                            <th>Produto</th>
+                                            <th>Qtd</th>
+                                            <th>Preço Un.</th>
+                                            <th>Subtotal</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {pedidoDetalhe.itens?.map((item, index) => (
+                                            <tr key={item.id || index}>
+                                                <td>{item.nomeProduto}</td>
+                                                <td>{item.quantidade}</td>
+                                                <td>R$ {item.precoUnitario.toFixed(2)}</td>
+                                                <td>R$ {(item.quantidade * item.precoUnitario).toFixed(2)}</td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+
+                                <h2 className="pedido-total" style={{ textAlign: 'right', fontSize: '1.5em' }}>
+                                    Valor Total: R$ {pedidoDetalhe.valorTotal.toFixed(2)}
+                                </h2>
+                            </>
+                        ) : (
+                            <p>Não foi possível carregar os dados.</p>
+                        )}
+                    </div>
+                </div>
+            )}
+
         </div>
     );
 }

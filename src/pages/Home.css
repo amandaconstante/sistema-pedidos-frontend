@@ -70,3 +70,75 @@
 .paginacao-info {
     font-weight: bold;
 }
+
+/* === ESTILOS DO MODAL DE DETALHES === */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background-color: white;
+    padding: 30px;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 600px;
+    max-height: 80vh;
+    overflow-y: auto;
+    position: relative;
+}
+
+.btn-fechar-modal {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: none;
+    border: none;
+    font-size: 1.5em;
+    cursor: pointer;
+    color: #666;
+}
+
+.btn-fechar-modal:hover {
+    color: #dc3545;
+}
+
+.tabela-itens {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.tabela-itens th, .tabela-itens td {
+    border-bottom: 1px solid #eee;
+    padding: 10px;
+    text-align: left;
+}
+
+.tabela-itens th {
+    background-color: #f9f9f9;
+}
+
+.btn-detalhes {
+    margin-top: 15px;
+    width: 100%;
+    background-color: #7b7b7b;
+    color: white;
+    border: none;
+    padding: 8px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.btn-detalhes:hover {
+    background-color: #8e8e8e;
+}
