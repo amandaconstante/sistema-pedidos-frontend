@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import './cadastroPedido.css'
+import './CadastroPedido.css'
 import Menu from '../componentes/Menu'
 
 function CadastroPedido() {
