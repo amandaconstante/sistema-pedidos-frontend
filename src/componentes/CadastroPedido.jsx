@@ -3,7 +3,6 @@ import Menu from '../componentes/Menu'
 
 function CadastroPedido() {
     const [clienteId, setClienteId] = useState('');
-    const [data, setData] = useState('');
     const [clienteSelecionado, setClienteSelecionado] = useState('');
 
     const [itens, setItens] = useState([]);
