@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import './cadastroPedido.css'
 import Menu from '../componentes/Menu'
 
 function CadastroPedido() {
@@ -31,8 +32,8 @@ function CadastroPedido() {
     useEffect(() => {
         const carregarDados = async () => {
             try {
-                const resClientes = await fetch('http://localhost:8080/clientes');
-                const resProdutos = await fetch('http://localhost:8080/produtos');
+                const resClientes = await fetch('https://sistema-pedidos-production-47b7.up.railway.app/clientes');
+                const resProdutos = await fetch('https://sistema-pedidos-production-47b7.up.railway.app/produtos');
                 
                 if (resClientes.ok) {
                     const dadosClientes = await resClientes.json();
@@ -53,7 +54,6 @@ function CadastroPedido() {
 
     const buscarCliente = (idSelecionado) => {
         const encontrado = clientes.find(cli => cli.id === Number(idSelecionado));
-        console.log('encontrado = ', encontrado);
         setClienteSelecionado(encontrado);
     }
 
@@ -63,7 +63,6 @@ function CadastroPedido() {
     }
 
     const adicionarItem = () => {
-        console.log("chamou adicionarITem");
         if (!produtoSelecionado) return;
 
         const itemJaExiste = sacola.find(item => item.id === produtoSelecionado.id);
@@ -90,8 +89,6 @@ function CadastroPedido() {
             quantidade: quantidade,
             valorTotalItem: produtoSelecionado.preco * quantidade
         };
-        console.log("produtoSelecionado.preco = ", produtoSelecionado.preco);
-        console.log("valorTotalItem = ", novoItem.valorTotalItem);
         setSacola([...sacola, novoItem]);
         }
 
@@ -122,7 +119,7 @@ function CadastroPedido() {
         };
 
         try {
-            const resposta = await fetch('http://localhost:8080/pedidos', {
+            const resposta = await fetch('https://sistema-pedidos-production-47b7.up.railway.app/pedidos', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload)
@@ -142,11 +139,11 @@ function CadastroPedido() {
     };
 
     return (
-        <div style={{ padding: '20px', maxWidth: '900px', margin: '0 auto', fontFamily: 'sans-serif' }}>
+        <div className="container-pagina">
             <Menu />
             <h1>Cadastro de Pedido</h1>
-            <form >
-                <fieldset >
+            <form className="form-cadastro">
+                <fieldset className="sessao-form">
                     <label htmlFor="clienteId">Cliente: </label>
                     <select name="cliente" id="clienteId" value={clienteId} onChange={(e) => {setClienteId(e.target.value); buscarCliente(e.target.value)}}>
                         <option value="" disabled>Selecione um cliente</option>
@@ -156,15 +153,15 @@ function CadastroPedido() {
                             </option>
                         ))}
                     </select>
+
+                    {clienteSelecionado && ( <div >
+                        <input type="text" disabled value={clienteSelecionado.nome}/>
+                        <input type="text" disabled value={clienteSelecionado.email} />
+                        <input type="text disabled" disabled value={clienteSelecionado.cpf} />
+                    </div> )}
                 </fieldset>
 
-                {clienteSelecionado && ( <fieldset >
-                    <input type="text" disabled value={clienteSelecionado.nome}/>
-                    <input type="text" disabled value={clienteSelecionado.email} />
-                    <input type="text disabled" disabled value={clienteSelecionado.cpf} />
-                </fieldset> )}
-
-                <fieldset>
+                <fieldset className="sessao-form">
                     <label htmlFor="produtoId">Produto: </label>
                     <select name="produto" id="produtoId" value={produtoId} onChange={(e) => {setProdutoId(e.target.value); buscarProduto(e.target.value)}}>
                         <option value="" disabled>Selecione um produto</option>
@@ -172,19 +169,20 @@ function CadastroPedido() {
                             <option key={produto.id} value={produto.id}>{produto.nome} - R$ {produto.preco}</option>
                         ))}
                     </select>
+
+                    {produtoSelecionado && (<div className="sessao-form">
+                        <input type="text" disabled value={produtoSelecionado.nome} />
+                        <input type="text" disabled value={produtoSelecionado.descricao} />
+                        <input type="text" disabled value={`R$ ${produtoSelecionado.preco}`} />
+                        <input type="number" min="1" step="1" value={quantidade} onChange={(e) => setQuantidade(e.target.value)} />
+
+                        <button type='button' onClick={adicionarItem} className="btn btn-adicionar" >Adicionar produto</button>
+                    </div>)}    
                 </fieldset>
-                
-                {produtoSelecionado && (<fieldset>
-                    <input type="text" disabled value={produtoSelecionado.nome} />
-                    <input type="text" disabled value={produtoSelecionado.descricao} />
-                    <input type="text" disabled value={`R$ ${produtoSelecionado.preco}`} />
-                    <input type="number" min="1" step="1" value={quantidade} onChange={(e) => setQuantidade(e.target.value)} />
 
-                    <button type='button' onClick={adicionarItem} >Adicionar produto</button>
-                </fieldset>)}
-
-                {sacola.length > 0 && (<fieldset>
-                    <table>
+{/* --- SEÇÃO SACOLA (CARRINHO) --- */}
+                {sacola.length > 0 && (<fieldset className="sessao-form">
+                    <table className="tabela-pedidos">
                         <thead>
                             <tr>
                                 <th>Produto</th>
@@ -202,7 +200,7 @@ function CadastroPedido() {
                                     <td>{produto.quantidade}</td>
                                     <td>{produto.valorTotalItem.toFixed(2)}</td>
                                     <td>
-                                        <button type='button' onClick={() => excluirItem(produto.id)}>Excluir</button>
+                                        <button type='button' className="btn btn-excluir" onClick={() => excluirItem(produto.id)}>Excluir</button>
                                     </td>
                                 </tr>
                             ))}
@@ -210,11 +208,12 @@ function CadastroPedido() {
                     </table>
                 </fieldset>)}
 
-                {sacola.length > 0 && (<fieldset>
+{/* --- FINALIZAÇÃO DO PEDIDO --- */}
+                {sacola.length > 0 && (<fieldset className="sessao-form" >
                     <label htmlFor="totalPedido">Valor Total do Pedido R$ </label>
                     <input type="text" disabled value={sacola.reduce((acumulador, item) => acumulador + item.valorTotalItem, 0).toFixed(2)} />
 
-                    <button type="button" onClick={salvarPedido} style={{marginLeft: '10px', background: 'green', color: 'white'}}>
+                    <button type="button" className="btn btn-finalizar" onClick={salvarPedido} style={{marginLeft: '10px', background: 'green', color: 'white'}}>
                             Finalizar Pedido
                     </button>
                 </fieldset>)}

@@ -1,0 +1,72 @@
+.mensagem-vazia {
+    color: #666;
+    font-style: italic;
+}
+
+.pedidos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 15px;
+}
+
+.pedido-card {
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 15px;
+    background-color: white;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.pedido-card-header {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+}
+
+.pedido-titulo {
+    color: #007BFF;
+}
+
+.pedido-data {
+    font-size: 0.9em;
+    color: #888;
+}
+
+.pedido-texto {
+    margin: 5px 0;
+}
+
+.pedido-total {
+    margin: 10px 0 0 0;
+    font-size: 1.2em;
+    color: green;
+    font-weight: bold;
+}
+
+/* Área de Paginação */
+.paginacao-container {
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    align-items: center;
+}
+
+.btn-paginacao {
+    padding: 8px 15px;
+    cursor: pointer;
+    border: 1px solid #ccc;
+    background-color: #f9f9f9;
+    border-radius: 4px;
+}
+
+.btn-paginacao:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.paginacao-info {
+    font-weight: bold;
+}

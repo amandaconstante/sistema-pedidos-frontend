@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import { createBrowserRouter, RouterProvider} from 'react-router-dom'
-import Home from './componentes/Home'
-import CadastroPedido from './componentes/CadastroPedido'
-import CadastroCliente from './componentes/CadastroCliente'
+import Home from './pages/Home'
+import CadastroPedido from './pages/CadastroPedido'
+import CadastroCliente from './pages/CadastroCliente'
 
 const router = createBrowserRouter ([
   {
@@ -23,7 +23,6 @@ function App() {
 
   return (
     <>
-      {/* <h1>Sistema de Pedidos</h1> */}
       <RouterProvider router={router}/>
     </>
   )
