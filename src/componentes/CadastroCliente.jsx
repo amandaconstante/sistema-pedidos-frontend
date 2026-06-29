@@ -79,7 +79,7 @@ function CadastroCliente() {
 
 
     return (
-        <div>
+        <div style={{ padding: '20px', maxWidth: '900px', margin: '0 auto', fontFamily: 'sans-serif' }}>
             <Menu />
             <h1>Cadastro de Cliente</h1>
             <form onSubmit={handleSubmit}>

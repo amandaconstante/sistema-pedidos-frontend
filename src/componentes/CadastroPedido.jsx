@@ -142,11 +142,11 @@ function CadastroPedido() {
     };
 
     return (
-        <>
+        <div style={{ padding: '20px', maxWidth: '900px', margin: '0 auto', fontFamily: 'sans-serif' }}>
             <Menu />
             <h1>Cadastro de Pedido</h1>
             <form >
-                <fieldset>
+                <fieldset >
                     <label htmlFor="clienteId">Cliente: </label>
                     <select name="cliente" id="clienteId" value={clienteId} onChange={(e) => {setClienteId(e.target.value); buscarCliente(e.target.value)}}>
                         <option value="" disabled>Selecione um cliente</option>
@@ -173,6 +173,7 @@ function CadastroPedido() {
                         ))}
                     </select>
                 </fieldset>
+                
                 {produtoSelecionado && (<fieldset>
                     <input type="text" disabled value={produtoSelecionado.nome} />
                     <input type="text" disabled value={produtoSelecionado.descricao} />
@@ -221,7 +222,7 @@ function CadastroPedido() {
             </form>
             
             
-        </>
+        </div>
     );
 }
 
