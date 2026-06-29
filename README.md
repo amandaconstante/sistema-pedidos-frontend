@@ -4,7 +4,7 @@ Interface gráfica desenvolvida em **React** para consumir a API RESTful dispon�
 
 
 ## 🔗 Links Importantes
-* **Aplicação ao vivo (Front-end):** https://sistema-pedidos-frontend-production.up.railway.app/
+* **Aplicação (Front-end):** https://sistema-pedidos-frontend-production.up.railway.app/
 * **Repositório do Back-end (Java):** https://github.com/amandaconstante/sistema-pedidos
 
 ## 🛠️ Tecnologias Utilizadas
